@@ -1,25 +1,62 @@
-import logo from './logo.svg';
-import './App.css';
+
+// // src/App.js
+// import React, { useState, useEffect } from 'react';
+// import axios from 'axios';
+// import Card from './components/Card.js';
+
+// function App() {
+//     const [entries, setEntries] = useState([]);
+
+//     useEffect(() => {
+//         // Fetch data from the API
+//         axios.get('http://localhost:5000/getdata/get')
+//             .then(response => {  
+//                 setEntries(response.data);
+//             })
+//             .catch(error => {
+//                 console.error('There was an error fetching the data!', error);
+//             });
+//     }, []);
+
+//     return (
+//         <div className="App">
+//             <h1>Entries</h1>
+//             <div className="card-container">
+//                 {entries.map((entry, index) => (
+//                     <Card key={index} entry={entry} />
+//                 ))}
+//             </div>
+//         </div>
+//     );
+// }
+
+// export default App;
+
+
+// src/App.js
+import React from 'react';
+import Dashboard from './components/Dashboard';
+import Piechart from './components/Piechart';
+
+import Relevancechart from './components/Relevancechart';
+import Doughnut from './components/Doughnut';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+
+
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <div className="App">
+        <Navbar/>
+           <Relevancechart/>
+           <Doughnut/>
+            <Dashboard />
+            <Piechart/>
+            <Footer/>
+         
+        </div>
+    );
 }
 
 export default App;
