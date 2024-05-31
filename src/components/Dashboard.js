@@ -16,6 +16,7 @@ import {
 import zoomPlugin from 'chartjs-plugin-zoom';
 import 'chartjs-plugin-zoom';
 import './Dashboard.css'; // Import CSS for styling
+import Spinner from './Spinner'; // Import Spinner component
 
 // Register necessary Chart.js components and plugins
 ChartJS.register(
@@ -32,15 +33,18 @@ ChartJS.register(
 
 function Dashboard() {
     const [entries, setEntries] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         // Fetch data from the API
         axios.get(`${process.env.REACT_APP_BASE_URL}/getdata/get`)
             .then(response => {
                 setEntries(response.data);
+                setLoading(false); // Set loading to false once data is fetched
             })
             .catch(error => {
                 console.error('There was an error fetching the data!', error);
+                setLoading(false); // Set loading to false even if there's an error
             });
     }, []);
 
@@ -141,13 +145,15 @@ function Dashboard() {
 
     return (
         <div  className='bg-sky-50 mt-[-20px] pt-[80px] w-full h-[750px]'>
-           
-            <div className="w-[80%] h-[500px] ml-[15%]">
-                <Line data={chartData} options={chartOptions} />
-            </div>
+            {loading ? (
+                <Spinner /> // Show spinner while loading
+            ) : (
+                <div className="w-[80%] h-[500px] ml-[15%]">
+                    <Line data={chartData} options={chartOptions} />
+                </div>
+            )}
         </div>
     );
 }
 
 export default Dashboard;
-

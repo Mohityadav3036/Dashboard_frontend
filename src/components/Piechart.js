@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Pie } from 'react-chartjs-2';
+import Spinner from './Spinner'; // Import Spinner component
 import './Piechart.css';
 
 import {
@@ -18,14 +19,17 @@ ChartJS.register(
 
 function Piechart() {
     const [entries, setEntries] = useState([]);
+    const [loading, setLoading] = useState(true); // State for loading
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_BASE_URL}/getdata/get`)
             .then(response => {
                 setEntries(response.data);
+                setLoading(false); // Set loading to false once data is fetched
             })
             .catch(error => {
                 console.error('There was an error fetching the data!', error);
+                setLoading(false); // Set loading to false even if there's an error
             });
     }, []);
 
@@ -84,18 +88,23 @@ function Piechart() {
     };
 
     return (
-        <div className="bg-sky-50 w-[100%] h-[1800px] ">
-            
-            <div className=" items-center h-[600px] ml-[32%]">
-                <h2 className=' ml-[10%] text-5xl font-bold mb-5 text-gray-600'>Sector Distribution</h2>
-                <Pie data={sectorData} />
-            </div>
-            <div className=" mt-[200px] items-center h-[800px] ml-[25%]">
-                <h2 className=' ml-[18%] text-5xl font-bold mb-5 text-gray-600'>Topic Distribution</h2>
-                <Pie data={topicData} />
-            </div>
+        <div className="bg-sky-50 w-[100%] h-[1800px]">
+            {loading ? (
+                <Spinner /> // Show spinner while loading
+            ) : (
+                <>
+                    <div className="items-center h-[600px] ml-[32%]">
+                        <h2 className='ml-[10%] text-5xl font-bold mb-5 text-gray-600'>Sector Distribution</h2>
+                        <Pie data={sectorData} />
+                    </div>
+                    <div className="mt-[200px] items-center h-[800px] ml-[25%]">
+                        <h2 className='ml-[18%] text-5xl font-bold mb-5 text-gray-600'>Topic Distribution</h2>
+                        <Pie data={topicData} />
+                    </div>
+                </>
+            )}
         </div>
     );
 }
 
-export default Piechart
+export default Piechart;
